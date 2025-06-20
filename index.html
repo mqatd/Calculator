@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Financial Calculators</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; }
+    h2 { margin-top: 40px; }
+    .input-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    table {
+      margin-top: 20px;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: right;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    td:first-child, th:first-child {
+      text-align: center;
+    }
+    .result {
+      font-weight: bold;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>1️⃣ Monthly Expense Forecast Calculator</h2>
+
+  <div class="input-group">
+    <label for="rate">Inflation rate (%)</label>
+    <input type="number" id="rate" value="5">
+  </div>
+
+  <div class="input-group">
+    <label for="amount">Current monthly expense (₹)</label>
+    <input type="number" id="amount" value="30000">
+  </div>
+
+  <div class="input-group">
+    <label for="years">Number of years</label>
+    <input type="number" id="years" value="10">
+  </div>
+
+  <button onclick="calculateForecast()">Calculate Forecast</button>
+
+  <div id="forecastOutput"></div>
+
+
+  <h2>2️⃣ Required Investment Calculator</h2>
+
+  <div class="input-group">
+    <label for="monthly_expense">Monthly Expense (₹)</label>
+    <input type="number" id="monthly_expense" value="30000">
+  </div>
+
+  <div class="input-group">
+    <label for="returns">Expected Annual Return (%)</label>
+    <input type="number" id="returns" value="8">
+  </div>
+
+  <div class="input-group">
+    <label for="tax">Maximum Tax Rate (%)</label>
+    <input type="number" id="tax" value="10">
+  </div>
+
+  <button onclick="calculateRequiredInvestment()">Calculate Required Investment</button>
+
+  <div class="result" id="investmentOutput"></div>
+
+  <script>
+    function calculateForecast() {
+      const r = parseFloat(document.getElementById('rate').value) / 100;
+      const a = parseFloat(document.getElementById('amount').value);
+      const n = parseInt(document.getElementById('years').value);
+
+      let output = "<table><tr><th>Year</th><th>Monthly Expense (₹)</th></tr>";
+      let expense = a;
+
+      for (let i = 1; i <= n; i++) {
+        output += `<tr><td>${i}</td><td>${expense.toFixed(2)}</td></tr>`;
+        expense *= (1 + r);
+      }
+
+      output += "</table>";
+      document.getElementById("forecastOutput").innerHTML = output;
+    }
+
+    function calculateRequiredInvestment() {
+      const monthly_expense = parseFloat(document.getElementById('monthly_expense').value);
+      const returns_percent = parseFloat(document.getElementById('returns').value);
+      const tax_percent = parseFloat(document.getElementById('tax').value);
+
+      const annual_expense = monthly_expense * 12;
+      const returns = returns_percent / 100;
+      const tax = tax_percent / 100;
+      const net_returns = returns * (1 - tax);
+      const x = annual_expense / net_returns;
+
+      document.getElementById("investmentOutput").innerHTML =
+        `Required investment amount: ₹${x.toFixed(2)}`;
+    }
+  </script>
+
+</body>
+</html>
